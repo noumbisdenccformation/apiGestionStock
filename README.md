@@ -1,4 +1,53 @@
-# API Gestion de Stock
+# API Gestion de Stock - Spring Boot
+
+Une API REST complète pour la gestion de stock développée avec Spring Boot, MySQL et Swagger UI.
+
+## 📋 Fonctionnalités
+
+- ✅ Gestion des articles et catégories
+- ✅ Gestion des clients et fournisseurs
+- ✅ Gestion des commandes clients et fournisseurs
+- ✅ Gestion des mouvements de stock
+- ✅ API REST documentée avec Swagger
+- ✅ Authentification JWT (désactivée pour les tests)
+- ✅ Base de données MySQL avec données d'exemple
+
+## 🚀 Installation Rapide
+
+### 1. Installation de la Base de Données
+
+#### Option A: Installation Automatique (Recommandée)
+```bash
+# Rendre le script exécutable
+chmod +x setup-database.sh
+
+# Exécuter le script d'installation
+./setup-database.sh
+```
+
+#### Option B: Installation Manuelle
+Suivez les instructions détaillées dans [DATABASE_SETUP.md](DATABASE_SETUP.md)
+
+### 2. Démarrage de l'Application
+```bash
+# Cloner le projet
+git clone <votre-repo-url>
+cd gestiondestock
+
+# Démarrer l'application
+./mvnw spring-boot:run
+```
+
+### 3. Accès à l'API
+- **Swagger UI :** http://localhost:8080/swagger-ui.html
+- **API Base URL :** http://localhost:8080/api
+
+## 📁 Fichiers de Base de Données
+
+- `database-schema.sql` - Structure complète de la base de données
+- `database-sample-data.sql` - Données d'exemple pour les tests
+- `setup-database.sh` - Script d'installation automatique
+- `DATABASE_SETUP.md` - Documentation complète de l'installation
 
 ## Description
 API REST pour la gestion de stock développée avec Spring Boot. Cette API permet de gérer les articles, catégories, commandes clients/fournisseurs et mouvements de stock.
