@@ -1,0 +1,250 @@
+@startuml Gestion de Stock - Diagramme de Classes
+
+!theme plain
+skinparam classAttributeIconSize 0
+skinparam classFontSize 12
+skinparam classFontName Arial
+skinparam backgroundColor #FFFFFF
+skinparam classBackgroundColor #F8F9FA
+skinparam classBorderColor #6C757D
+skinparam arrowColor #495057
+
+title API Gestion de Stock - Diagramme de Classes UML
+
+' =====================================================
+' ENTITÉS PRINCIPALES
+' =====================================================
+
+class AbstractEntity {
+  +id: Integer
+  +creationDate: LocalDateTime
+  +lastModifiedDate: LocalDateTime
+}
+
+class Category {
+  +code: String
+  +designation: String
+}
+
+class Article {
+  +codeArticle: String
+  +designation: String
+  +prixUnitaireHt: BigDecimal
+  +tauxTva: BigDecimal
+  +prixUnitaireTtc: BigDecimal
+  +photo: String
+}
+
+class Client {
+  +nom: String
+  +prenom: String
+  +mail: String
+  +numTel: String
+}
+
+class Fournisseur {
+  +nom: String
+  +prenom: String
+  +mail: String
+  +numTel: String
+}
+
+class Utilisateur {
+  +nom: String
+  +prenom: String
+  +email: String
+  +motDePasse: String
+  +photo: String
+  +dateDeNaissance: LocalDate
+}
+
+class Adresse {
+  +adresse1: String
+  +adresse2: String
+  +ville: String
+  +codePostale: String
+  +pays: String
+}
+
+' =====================================================
+' ENTITÉS DE COMMANDE
+' =====================================================
+
+class CommandeClient {
+  +code: String
+  +dateCommande: LocalDateTime
+  +statut: StatutCommande
+}
+
+class CommandeFournisseur {
+  +code: String
+  +dateCommande: LocalDateTime
+  +statut: StatutCommande
+}
+
+class LigneCommandeClient {
+  +quantite: BigDecimal
+  +prixUnitaire: BigDecimal
+}
+
+class LigneCommandeFournisseur {
+  +quantite: BigDecimal
+  +prixUnitaire: BigDecimal
+}
+
+' =====================================================
+' ENTITÉS DE STOCK
+' =====================================================
+
+class MouvementStock {
+  +dateMouvement: LocalDateTime
+  +quantite: BigDecimal
+  +typeMouvement: TypeMouvementStock
+  +sourceMouvement: String
+}
+
+class Ventes {
+  +code: String
+  +dateVente: LocalDateTime
+  +commentaire: String
+}
+
+class LigneVente {
+  +quantite: BigDecimal
+  +prixUnitaire: BigDecimal
+}
+
+' =====================================================
+' ENTITÉS SUPPLEMENTAIRES
+' =====================================================
+
+class Entreprise {
+  +nom: String
+  +description: String
+  +codeFiscal: String
+  +photo: String
+  +email: String
+  +numTel: String
+  +siteWeb: String
+}
+
+class Roles {
+  +roleName: String
+}
+
+' =====================================================
+' ÉNUMÉRATIONS
+' =====================================================
+
+enum StatutCommande {
+  EN_PREPARATION
+  COMMANDEE
+  LIVREE
+  EN_COURS
+  RECUE
+}
+
+enum TypeMouvementStock {
+  ENTREE
+  SORTIE
+  CORRECTION_POS
+  CORRECTION_NEG
+}
+
+' =====================================================
+' RELATIONS
+' =====================================================
+
+' Héritage
+AbstractEntity <|-- Category
+AbstractEntity <|-- Article
+AbstractEntity <|-- Client
+AbstractEntity <|-- Fournisseur
+AbstractEntity <|-- Utilisateur
+AbstractEntity <|-- Adresse
+AbstractEntity <|-- CommandeClient
+AbstractEntity <|-- CommandeFournisseur
+AbstractEntity <|-- LigneCommandeClient
+AbstractEntity <|-- LigneCommandeFournisseur
+AbstractEntity <|-- MouvementStock
+AbstractEntity <|-- Ventes
+AbstractEntity <|-- LigneVente
+AbstractEntity <|-- Entreprise
+AbstractEntity <|-- Roles
+
+' Relations Article - Category
+Article ||--o{ Category : "appartient à"
+
+' Relations CommandeClient
+CommandeClient ||--o{ Client : "appartient à"
+CommandeClient ||--o{ LigneCommandeClient : "contient"
+LigneCommandeClient ||--o{ Article : "réfère"
+
+' Relations CommandeFournisseur
+CommandeFournisseur ||--o{ Fournisseur : "appartient à"
+CommandeFournisseur ||--o{ LigneCommandeFournisseur : "contient"
+LigneCommandeFournisseur ||--o{ Article : "réfère"
+
+' Relations MouvementStock
+MouvementStock ||--o{ Article : "concerne"
+
+' Relations Ventes
+Ventes ||--o{ LigneVente : "contient"
+LigneVente ||--o{ Article : "réfère"
+
+' Relations Utilisateur
+Utilisateur ||--o{ Adresse : "a"
+Utilisateur ||--o{ Entreprise : "appartient à"
+Utilisateur ||--o{ Roles : "a"
+
+' Relations Client/Fournisseur
+Client ||--o{ Adresse : "a"
+Fournisseur ||--o{ Adresse : "a"
+
+' Relations Entreprise
+Entreprise ||--o{ Adresse : "a"
+
+' Relations StatutCommande
+CommandeClient ||--o{ StatutCommande : "a"
+CommandeFournisseur ||--o{ StatutCommande : "a"
+
+' Relations TypeMouvementStock
+MouvementStock ||--o{ TypeMouvementStock : "est de type"
+
+' =====================================================
+' NOTES ET LÉGENDES
+' =====================================================
+
+note top of AbstractEntity
+  Classe abstraite contenant
+  les champs communs à toutes
+  les entités (id, dates)
+end note
+
+note right of Category
+  Gestion des catégories
+  d'articles (Informatique,
+  Bureau, Mobilier, etc.)
+end note
+
+note right of Article
+  Articles du stock avec
+  prix HT/TTC et TVA
+end note
+
+note right of MouvementStock
+  Suivi des entrées/sorties
+  de stock avec historique
+end note
+
+note right of CommandeClient
+  Commandes passées par
+  les clients
+end note
+
+note right of CommandeFournisseur
+  Commandes passées aux
+  fournisseurs
+end note
+
+@enduml 
